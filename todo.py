@@ -330,9 +330,41 @@ def build_parser() -> argparse.ArgumentParser:
     p = sub.add_parser("categories", aliases=["cats"], help="List all categories")
     p.set_defaults(func=cmd_categories)
 
+    # shell
+    p = sub.add_parser("shell", help="Start an interactive shell")
+    p.set_defaults(func=cmd_shell)
+
     return parser
 
-# ── Section 9: Entry Point ────────────────────────────────────────────────────
+# ── Section 9: Interactive Shell ──────────────────────────────────────────────
+
+def cmd_shell(args: argparse.Namespace) -> None:
+    import shlex
+    parser = build_parser()
+    parser.prog = ""  # cleaner usage lines in shell mode
+    print("todo shell  (type 'quit' or Ctrl-D to exit, 'help' for commands)")
+    while True:
+        try:
+            line = input("todo> ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            break
+        if not line:
+            continue
+        if line in ("quit", "exit", "q"):
+            break
+        try:
+            tokens = shlex.split(line)
+        except ValueError as e:
+            print(f"Error: {e}")
+            continue
+        try:
+            cmd_args = parser.parse_args(tokens)
+            cmd_args.func(cmd_args)
+        except SystemExit:
+            pass  # argparse errors and resolve_id failures print their message then raise SystemExit
+
+# ── Section 10: Entry Point ───────────────────────────────────────────────────
 
 def main() -> None:
     parser = build_parser()

@@ -145,6 +145,28 @@ todo cats
 
 ---
 
+### shell
+Start an interactive session where you can run commands without typing `todo` each time. Exit with `quit` or Ctrl-D.
+
+```
+todo shell
+```
+
+Example session:
+```
+$ todo shell
+todo shell  (type 'quit' or Ctrl-D to exit, 'help' for commands)
+todo> add "Write report" --due tomorrow --category work
+Added: [36c83c9e] Write report
+todo> list
+...
+todo> done 36c8
+Done: [36c83c9e] Write report
+todo> quit
+```
+
+---
+
 ## Task IDs
 
 Every task is assigned a unique ID (UUID). You only need to type enough characters to uniquely identify a task — usually 4–8 characters works fine.
